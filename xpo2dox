@@ -13,37 +13,85 @@
 BEGIN {
     FS="^\ +#";
 
-    is_class = 0;
     is_in_class = 0;
+    is_job = 0;
 
     indent = "";
 }
 
 {
-    if ($2 ~ /^class/)
+    if ($1 ~ "Exportfile for AOT version 1.0 or later")
     {
-        is_class = 1;
-        is_in_class = 1;
+        indent = "    ";
+
+        print "/** xpo2dox generated namespace for all classes. */ namespace AX { // " $1;
     }
 
-    # The closing brace will be printed at the end of the file instead of the
-    # end of the class declaration.
-    #
-    # As a consequence, all class members and methods will be inside the braces.
-    if (is_in_class && $2 ~ /^}/ )
+    #####
+    # Handle classes
+    else if ($2 ~ /^class/)
     {
+        is_in_class = 1;
+
+        print indent $2;
+    }
+    else if (is_in_class && $2 ~ /^}/ )
+    {
+        # The closing brace will be printed at the end of the file instead of the
+        # end of the class declaration.
+        #
+        # As a consequence, all class members and methods will be inside the braces.
         is_in_class = 0;
+        indent = "        ";
+
+        print indent "// " $2;
+    }
+
+    else if ($1 ~ "ENDCLASS")
+    {
         indent = "    ";
-    } 
+
+        print indent "} // " $1;
+    }
+    # /Handle classes
+    #####
+
+    #####
+    # Handle jobs
+    else if ($1 ~ "JOBVERSION")
+    {
+        is_job = 1;
+
+        print indent "/** xpo2dox generated wrapper class for all jobs. */ partial class Jobs { // " $1;
+
+        indent = "        ";
+    }
+    else if (is_job && $1 ~ "ENDSOURCE")
+    {
+        is_job = 0;
+        indent = "    ";
+        print indent "} // " $1;
+    }
+    # /Handle jobs
+    #####
+
+    # End of namespace AX
+    else if ($1 ~ "\\*\\*\\*Element: END")
+    {
+        indent = "";
+
+        print indent "} // " $1;
+    }
+
+    # Normal line of code
     else if ($2 != "")
     {
         print indent $2
-    } 
-}
+    }
 
-END {
-    if (is_class)
+    # Structuring element of the AX XPO (no code)
+    else
     {
-        print "}"
+        print indent "// " $1
     }
 }

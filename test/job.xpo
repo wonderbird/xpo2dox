@@ -16,7 +16,7 @@ Formatversion: 1
     # */
     #static void someJob(Args args)
     #{
-    #    HelloWorld hello;
+    #    HelloWorld hello = new HelloWorld();
     #    ;
     #
     #    info(hello.hello());
