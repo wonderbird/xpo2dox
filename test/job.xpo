@@ -13,13 +13,16 @@ Formatversion: 1
     # *
     # * I have to admit that I have never seen a source file mixing these two different
     # * indentation styles. This is only for the test case.
+    # *
+    # * \callgraph
     # */
     #static void someJob(Args args)
     #{
-    #    HelloWorld hello = new HelloWorld();
+    #    HelloWorld hello = new HelloWorldDecorator();
+    #    IPrinter printer = new ParallelPortPrinter();
     #    ;
     #
-    #    info(hello.hello());
+    #    printer.print(hello.hello());
     #}
   ENDSOURCE
 

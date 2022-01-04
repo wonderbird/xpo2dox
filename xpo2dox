@@ -29,9 +29,12 @@ BEGIN {
 
     #####
     # Handle classes
-    else if ($2 ~ /^class/)
+    else if ($2 ~ /^(class)|(interface)/)
     {
         is_in_class = 1;
+
+        gsub(/extends/, ":", $2);
+        gsub(/implements/, ":", $2);
 
         print indent $2;
     }
@@ -46,7 +49,6 @@ BEGIN {
 
         print indent "// " $2;
     }
-
     else if ($1 ~ "ENDCLASS")
     {
         indent = "    ";
