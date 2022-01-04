@@ -11,7 +11,8 @@
 # watch -n 5 'find ../igus/ax40 -type f | wc -l; find ./ax40 -type f | wc -l'
 #
 # Usage:
-# ./aot2dox.sh SOURCE TARGET
+#
+# aot2dox SOURCE TARGET
 #
 #    SOURCE    Directory containing a checkout of our AX40 AOT
 #
@@ -41,6 +42,6 @@ done
 echo "Extract code from XPO files ..."
 for FILE in `find "$SOURCE_DIR" \( -type f -iname "*.xpo" ! -path "*/.git/*" ! -path "*/.git" ! -path "*/.vscode/*" ! -path "*/.vscode" ! -path "*/Application Developer Documentation/*" ! -path "*/Application Developer Documentation" ! -path "*/Application Documentation/*" ! -path "*/Application Documentation" ! -path "*/System Documentation/*" ! -path "*/System Documentation" \)`; do
     TARGET=`echo "$FILE" | sed "s-${SOURCE_DIR}/*-${TARGET_DIR}/-"`
-    cat "$FILE" | ./xpo2code.sh > "$TARGET"
+    cat "$FILE" | ./xpo2dox > "$TARGET"
 done
 IFS=$OLD_IFS

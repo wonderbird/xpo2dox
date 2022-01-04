@@ -1,0 +1,26 @@
+Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: JOB
+
+; Microsoft Dynamics Job: AKA_Temp_updateInventTrans nicht geladen
+; --------------------------------------------------------------------------------
+  JOBVERSION 1
+  
+  SOURCE #someJob
+    #/**
+    # * For exported job files, the indentation is only 4 whitespaces.
+    # *
+    # * I have to admit that I have never seen a source file mixing these two different
+    # * indentation styles. This is only for the test case.
+    # */
+    #static void someJob(Args args)
+    #{
+    #    HelloWorld hello;
+    #    ;
+    #
+    #    info(hello.hello());
+    #}
+  ENDSOURCE
+
+***Element: END

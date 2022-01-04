@@ -1,0 +1,49 @@
+#!/usr/bin/awk -f
+#
+# Convert an XPO file into something that looks strongly like C# or Java.
+#
+# This script takes input from stdin. It assumes that the input originates
+# from an XPO file exported from Microsoft Dynamics AX 4.0. It converts the
+# file so that it looks very much like C# or Java code.
+#
+# The output is intended to be parsed by Doxygen in order to create source
+# code documentation.
+#
+
+BEGIN {
+    FS="^\ +#";
+
+    is_class = 0;
+    is_in_class = 0;
+
+    indent = "";
+}
+
+{
+    if ($2 ~ /^class/)
+    {
+        is_class = 1;
+        is_in_class = 1;
+    }
+
+    # The closing brace will be printed at the end of the file instead of the
+    # end of the class declaration.
+    #
+    # As a consequence, all class members and methods will be inside the braces.
+    if (is_in_class && $2 ~ /^}/ )
+    {
+        is_in_class = 0;
+        indent = "    ";
+    } 
+    else if ($2 != "")
+    {
+        print indent $2
+    } 
+}
+
+END {
+    if (is_class)
+    {
+        print "}"
+    }
+}
