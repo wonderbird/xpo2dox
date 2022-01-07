@@ -24,14 +24,27 @@
 # TODO error checking
 #
 SOURCE_DIR="$1"
-TARGET_DIR="./ax40"
+TARGET_DIR="$2"
+
+# Find the directory of this script
+# see https://stackoverflow.com/questions/59895/how-can-i-get-the-source-directory-of-a-bash-script-from-within-the-script-itsel
+SOURCE=${BASH_SOURCE[0]}
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  SCRIPT_DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+  SOURCE=$(readlink "$SOURCE")
+  [[ $SOURCE != /* ]] && SOURCE=$SCRIPT_DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+SCRIPT_DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
 OLD_IFS=$IFS
 IFS=$'\n'
 
-rm -rf "$TARGET_DIR"
+if [ -e "$TARGET_DIR" ]; then
+    echo "ERROR: Target directory $TARGET_DIR should not exist beforehand."
+    exit 1
+fi
 
-echo "Create target directory tree ..."
+echo "Create target directory tree in $TARGET_DIR ..."
 for DIR in `find "$SOURCE_DIR" \( -type d ! -path "*/.git/*" ! -path "*/.git" ! -path "*/.vscode/*" ! -path "*/.vscode" ! -path "*/Application Developer Documentation/*" ! -path "*/Application Developer Documentation" ! -path "*/Application Documentation/*" ! -path "*/Application Documentation" ! -path "*/System Documentation/*" ! -path "*/System Documentation" \)`; do
     if [[ ! "$DIR" =~ "$EXCLUDE_DIR_REGEX" ]]; then 
         TARGET_SUBDIR=`echo "$DIR" | sed "s-${SOURCE_DIR}/*--"`
@@ -42,6 +55,8 @@ done
 echo "Extract code from XPO files ..."
 for FILE in `find "$SOURCE_DIR" \( -type f -iname "*.xpo" ! -path "*/.git/*" ! -path "*/.git" ! -path "*/.vscode/*" ! -path "*/.vscode" ! -path "*/Application Developer Documentation/*" ! -path "*/Application Developer Documentation" ! -path "*/Application Documentation/*" ! -path "*/Application Documentation" ! -path "*/System Documentation/*" ! -path "*/System Documentation" \)`; do
     TARGET=`echo "$FILE" | sed "s-${SOURCE_DIR}/*-${TARGET_DIR}/-"`
-    cat "$FILE" | ./xpo2dox > "$TARGET"
+    cat "$FILE" | "$SCRIPT_DIR/xpo2dox" > "$TARGET.cs"
 done
 IFS=$OLD_IFS
+
+echo "Done"

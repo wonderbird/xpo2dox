@@ -21,7 +21,7 @@ Formatversion: 1
         #/**
         # * Say "hello" to the world.
         # */
-        #class HelloWorld
+        #public class HelloWorld
         #{
         #}
       ENDSOURCE

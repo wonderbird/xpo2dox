@@ -29,7 +29,7 @@ BEGIN {
 
     #####
     # Handle classes
-    else if ($2 ~ /^(class)|(interface)/)
+    else if ($2 ~ /(class)|(interface)/)
     {
         is_in_class = 1;
 
