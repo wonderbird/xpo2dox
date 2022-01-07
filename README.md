@@ -2,6 +2,16 @@
 
 A Microsoft Dynamics AX 4.0 [XPO file](https://docs.microsoft.com/en-us/dynamicsax-2012/developer/how-to-export-application-objects-by-using-the-aot?redirectedfrom=MSDN) preprocessor for [Doxygen](https://www.doxygen.nl/helpers.html)
 
+## Status
+
+This is a proof of concept.
+
+The code in this repository is experimental. In preliminary tests it worked sufficiently well to proof that the idea works.
+
+Before adding more features, the scripts in this repository should be implemented in a suitable high level programming language. The features should be tested automatically. Otherwise I suspect the code complexity to rise and bugs creep in.
+
+Please keep this in mind when forking and creating pull requests. I might decline or delay merging.
+
 ## About
 
 [Doxygen](https://www.doxygen.nl) generates source code documentation from annotated source code files. It supports multiple programming languages. However, Microsoft Dynamics AX 4.0 has been missing until today.
