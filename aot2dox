@@ -54,7 +54,7 @@ done
 
 echo "Extract code from XPO files ..."
 for FILE in `find "$SOURCE_DIR" \( -type f -iname "*.xpo" ! -path "*/.git/*" ! -path "*/.git" ! -path "*/.vscode/*" ! -path "*/.vscode" ! -path "*/Application Developer Documentation/*" ! -path "*/Application Developer Documentation" ! -path "*/Application Documentation/*" ! -path "*/Application Documentation" ! -path "*/System Documentation/*" ! -path "*/System Documentation" \)`; do
-    TARGET=`echo "$FILE" | sed "s-${SOURCE_DIR}/*-${TARGET_DIR}/-"`
+    TARGET=`echo "$FILE" | sed "s|${SOURCE_DIR}/*|${TARGET_DIR}/|"`
     cat "$FILE" | "$SCRIPT_DIR/xpo2dox" > "$TARGET.cs"
 done
 IFS=$OLD_IFS
