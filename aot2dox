@@ -5,11 +5,6 @@
 # The converted files will be stored in a tree which is similar to
 # the source tree. Files will be named *.xpo
 #
-# To check the progress, you can use the watch command and compare the number of
-# files in source and target:
-#
-# watch -n 5 'find ../igus/ax40 -type f | wc -l; find ./ax40 -type f | wc -l'
-#
 # Usage:
 #
 # aot2dox SOURCE TARGET
@@ -20,7 +15,11 @@
 #              This directory will be erased at the beginning of the script.
 #              It will be recreated from scratch then.
 #
-# TODO ensure that the target folder can be specified. At the moment ax40 is hard coded.
+# To check the progress, you can use the watch command and compare the number of
+# files in source and target:
+#
+# watch -n 5 'find SOURCE -type f | wc -l; find TARGET -type f | wc -l'
+#
 # TODO error checking
 #
 SOURCE_DIR="$1"
